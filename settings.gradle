@@ -1,3 +1,3 @@
 include ':LoadingRecyclerView'
-include ':app'
+include ':Demo'
 rootProject.name = "LoadingRecyclerViewDemo"

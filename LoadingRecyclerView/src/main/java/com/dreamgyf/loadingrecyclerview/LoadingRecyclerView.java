@@ -124,10 +124,18 @@ public class LoadingRecyclerView extends RecyclerView {
 			@Override
 			public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
 				super.onScrollStateChanged(recyclerView, newState);
-				if (mCanLoadOfStart && (mDirection & Direction.START) == Direction.START && !isLoadingOfStart && mLayoutManager != null && isScrollToStart()) {
+				if (mCanLoadOfStart
+						&& (mDirection & Direction.START) == Direction.START
+						&& !isLoadingOfStart
+						&& newState == SCROLL_STATE_IDLE
+						&& mLayoutManager != null && isScrollToStart()) {
 					loadStart(Direction.START);
 				}
-				if (mCanLoadOfEnd && (mDirection & Direction.END) == Direction.END && !isLoadingOfEnd && mLayoutManager != null && isScrollToEnd()) {
+				if (mCanLoadOfEnd
+						&& (mDirection & Direction.END) == Direction.END
+						&& !isLoadingOfEnd
+						&& newState == SCROLL_STATE_IDLE
+						&& mLayoutManager != null && isScrollToEnd()) {
 					loadStart(Direction.END);
 				}
 			}
@@ -146,11 +154,11 @@ public class LoadingRecyclerView extends RecyclerView {
 			return position == 0;
 		} else if (mLayoutManager instanceof StaggeredGridLayoutManager) {
 			StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) mLayoutManager;
-			int column = layoutManager.getColumnCountForAccessibility(null, null);
+			int column = layoutManager.getSpanCount();
 			int[] positions = new int[column];
-			layoutManager.findLastCompletelyVisibleItemPositions(positions);
+			layoutManager.findFirstCompletelyVisibleItemPositions(positions);
 			for (int position : positions) {
-				if (position == column) {
+				if (position >= 0 && position < column) {
 					return true;
 				}
 			}
@@ -169,11 +177,11 @@ public class LoadingRecyclerView extends RecyclerView {
 			return position == layoutManager.getItemCount() - 1;
 		} else if (mLayoutManager instanceof StaggeredGridLayoutManager) {
 			StaggeredGridLayoutManager layoutManager = (StaggeredGridLayoutManager) mLayoutManager;
-			int column = layoutManager.getColumnCountForAccessibility(null, null);
+			int column = layoutManager.getSpanCount();
 			int[] positions = new int[column];
 			layoutManager.findLastCompletelyVisibleItemPositions(positions);
 			for (int position : positions) {
-				if (position == layoutManager.getItemCount() - column) {
+				if (position < layoutManager.getItemCount() && position >= layoutManager.getItemCount() - column) {
 					return true;
 				}
 			}
@@ -293,12 +301,12 @@ public class LoadingRecyclerView extends RecyclerView {
 			mCircularProgressTranslateYOfStart = mLoadingCanvasRadius;
 
 			mCircularProgressTranslateXOfEnd = (float) getWidth() / 2 - mLoadingCanvasRadius;
-			mCircularProgressTranslateYOfEnd = (float) getHeight() - mLoadingCanvasRadius - mLoadingCanvasRadius;
+			mCircularProgressTranslateYOfEnd = (float) getHeight() - mLoadingCanvasRadius * 2 - mLoadingCanvasRadius;
 		} else {
 			mCircularProgressTranslateXOfStart = mLoadingCanvasRadius;
 			mCircularProgressTranslateYOfStart = (float) getHeight() / 2 - mLoadingCanvasRadius;
 
-			mCircularProgressTranslateXOfEnd = (float) getWidth() - mLoadingCanvasRadius - mLoadingCanvasRadius;
+			mCircularProgressTranslateXOfEnd = (float) getWidth() - mLoadingCanvasRadius * 2 - mLoadingCanvasRadius;
 			mCircularProgressTranslateYOfEnd = (float) getHeight() / 2 - mLoadingCanvasRadius;
 		}
 		mLoadingMatrixOfStart.setTranslate(mCircularProgressTranslateXOfStart, mCircularProgressTranslateYOfStart);
@@ -426,13 +434,10 @@ public class LoadingRecyclerView extends RecyclerView {
 		mLoadingAnimatorOfEnd = new CircularProgressAnimator();
 	}
 
-	public void setLoadingDuration(int duration) {
-		mLoadingAnimatorOfStart.setDuration(duration);
-		mLoadingAnimatorOfEnd.setDuration(duration);
-	}
-
 	public void setLoadingRadius(float radius) {
 		mLoadingRadius = radius;
+		measureLoadingView();
+		drawBitmap();
 	}
 
 	@Override
@@ -443,27 +448,27 @@ public class LoadingRecyclerView extends RecyclerView {
 	}
 
 	@Override
-	public void onDraw(Canvas c) {
-		super.onDraw(c);
+	protected void dispatchDraw(Canvas canvas) {
+		super.dispatchDraw(canvas);
 		if (mLoadingAnimatorOfStart.isRunning()) {
-			c.drawBitmap(mLoadingBitmap, mLoadingMatrixOfStart, null);
-			c.save();
-			c.translate(mCircularProgressTranslateXOfStart, mCircularProgressTranslateYOfStart);
-			c.drawArc(mCircularProgressRectF
+			canvas.drawBitmap(mLoadingBitmap, mLoadingMatrixOfStart, null);
+			canvas.save();
+			canvas.translate(mCircularProgressTranslateXOfStart, mCircularProgressTranslateYOfStart);
+			canvas.drawArc(mCircularProgressRectF
 					, mLoadingAnimatorOfStart.getRotateAngle() + mLoadingAnimatorOfStart.getStartAngle()
 					, mLoadingAnimatorOfStart.getSweepAngle()
 					, false, mCircularProgressPaint);
-			c.restore();
+			canvas.restore();
 		}
 		if (mLoadingAnimatorOfEnd.isRunning()) {
-			c.drawBitmap(mLoadingBitmap, mLoadingMatrixOfStart, null);
-			c.save();
-			c.translate(mCircularProgressTranslateXOfEnd, mCircularProgressTranslateYOfEnd);
-			c.drawArc(mCircularProgressRectF
+			canvas.drawBitmap(mLoadingBitmap, mLoadingMatrixOfEnd, null);
+			canvas.save();
+			canvas.translate(mCircularProgressTranslateXOfEnd, mCircularProgressTranslateYOfEnd);
+			canvas.drawArc(mCircularProgressRectF
 					, mLoadingAnimatorOfEnd.getRotateAngle() + mLoadingAnimatorOfEnd.getStartAngle()
 					, mLoadingAnimatorOfEnd.getSweepAngle()
 					, false, mCircularProgressPaint);
-			c.restore();
+			canvas.restore();
 		}
 	}
 }

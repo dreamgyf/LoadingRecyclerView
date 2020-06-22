@@ -2,9 +2,9 @@
 <resources>
 	<declare-styleable name="LoadingRecyclerView">
 		<attr name="enableLoad" format="boolean"/>
-		<attr name="direction" format="enum">
-			<enum name="start" value="0x01"/>
-			<enum name="end" value="0x02"/>
+		<attr name="direction" format="flags">
+			<flag name="start" value="0x01"/>
+			<flag name="end" value="0x02"/>
 		</attr>
 	</declare-styleable>
 </resources>
