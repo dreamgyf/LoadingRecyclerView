@@ -20,17 +20,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+/**
+ * @author dreamgyf, g2409197994@gmail.com
+ */
 public class LoadingRecyclerView extends RecyclerView {
 
 	public static class Direction {
 		public final static int START = 0x01;
 		public final static int END = 0x02;
-		public final static int BOTH = 0x03;
+		final static int BOTH = 0x03;
 	}
 
 	private Context mContext;
 
-	private boolean mCanLoad;
+	private boolean mCanLoadOfStart;
+
+	private boolean mCanLoadOfEnd;
 
 	private int mDirection;
 
@@ -78,7 +83,7 @@ public class LoadingRecyclerView extends RecyclerView {
 	private void initAttrs(AttributeSet attrs) {
 		if (attrs != null) {
 			TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.LoadingRecyclerView, 0, 0);
-			mCanLoad = typedArray.getBoolean(R.styleable.LoadingRecyclerView_enableLoad, true);
+			mCanLoadOfStart = typedArray.getBoolean(R.styleable.LoadingRecyclerView_enableLoad, true);
 			mDirection = typedArray.getInt(R.styleable.LoadingRecyclerView_direction, Direction.END);
 			typedArray.recycle();
 		} else {
@@ -88,11 +93,29 @@ public class LoadingRecyclerView extends RecyclerView {
 	}
 
 	public void enableLoad() {
-		mCanLoad = true;
+		mCanLoadOfStart = true;
+		mCanLoadOfEnd = true;
+	}
+
+	public void enableLoad(int direction) {
+		if(direction == Direction.START) {
+			mCanLoadOfStart = true;
+		} else if(direction == Direction.END) {
+			mCanLoadOfEnd = true;
+		}
 	}
 
 	public void disableLoad() {
-		mCanLoad = false;
+		mCanLoadOfStart = false;
+		mCanLoadOfEnd = false;
+	}
+
+	public void disableLoad(int direction) {
+		if(direction == Direction.START) {
+			mCanLoadOfStart = false;
+		} else if(direction == Direction.END) {
+			mCanLoadOfEnd = false;
+		}
 	}
 
 	private void initLoadListener() {
@@ -100,17 +123,14 @@ public class LoadingRecyclerView extends RecyclerView {
 			@Override
 			public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
 				super.onScrollStateChanged(recyclerView, newState);
-				if (mCanLoad) {
-					if ((mDirection & Direction.START) == Direction.START  && !isLoadingOfStart && mLayoutManager != null && isScrollToStart()) {
-						loadStart(Direction.START);
-					}
-					if ((mDirection & Direction.END) == Direction.END && !isLoadingOfEnd && mLayoutManager != null && isScrollToEnd()) {
-						loadStart(Direction.END);
-					}
+				if (mCanLoadOfStart && (mDirection & Direction.START) == Direction.START && !isLoadingOfStart && mLayoutManager != null && isScrollToStart()) {
+					loadStart(Direction.START);
+				}
+				if (mCanLoadOfEnd && (mDirection & Direction.END) == Direction.END && !isLoadingOfEnd && mLayoutManager != null && isScrollToEnd()) {
+					loadStart(Direction.END);
 				}
 			}
 		};
-
 		super.addOnScrollListener(mOnLoadMoreListener);
 	}
 
@@ -174,10 +194,10 @@ public class LoadingRecyclerView extends RecyclerView {
 	}
 
 	private void loadStart(int direction) {
-		if(direction == Direction.START) {
+		if (direction == Direction.START) {
 			mLoadingAnimatorOfStart.start();
 			isLoadingOfStart = true;
-		} else if(direction == Direction.END) {
+		} else if (direction == Direction.END) {
 			mLoadingAnimatorOfEnd.start();
 			isLoadingOfEnd = true;
 		}
@@ -188,10 +208,10 @@ public class LoadingRecyclerView extends RecyclerView {
 	}
 
 	private void loadEnd(int direction) {
-		if(direction == Direction.START) {
+		if (direction == Direction.START) {
 			mLoadingAnimatorOfStart.cancel();
 			isLoadingOfStart = false;
-		} else if(direction == Direction.END) {
+		} else if (direction == Direction.END) {
 			mLoadingAnimatorOfEnd.cancel();
 			isLoadingOfEnd = false;
 		}
@@ -267,7 +287,7 @@ public class LoadingRecyclerView extends RecyclerView {
 		} else if (mLayoutManager instanceof StaggeredGridLayoutManager) {
 			orientation = ((StaggeredGridLayoutManager) mLayoutManager).getOrientation();
 		}
-		if(orientation == VERTICAL) {
+		if (orientation == VERTICAL) {
 			mCircularProgressTranslateXOfStart = (float) getWidth() / 2 - mLoadingCanvasRadius;
 			mCircularProgressTranslateYOfStart = mLoadingCanvasRadius;
 
@@ -343,17 +363,17 @@ public class LoadingRecyclerView extends RecyclerView {
 				@Override
 				public void onAnimationUpdate(ValueAnimator valueAnimator) {
 					mProgress = (float) valueAnimator.getAnimatedValue();
-					if(mProgress < 0.5) {
-						if(mProgress < 0.05) {
+					if (mProgress < 0.5) {
+						if (mProgress < 0.05) {
 							mEndAngle = mStartAngleOfAnimStart + 0.1f * 360;
-						} else if(mProgress > 0.45){
+						} else if (mProgress > 0.45) {
 							mEndAngle = mStartAngleOfAnimStart + 0.9f * 360;
 						} else {
 							mStartAngle = mStartAngleOfAnimStart;
 							mEndAngle = mStartAngle + mProgress * 2 * 360;
 						}
 					} else {
-						if(mProgress < 0.9) {
+						if (mProgress < 0.9) {
 							mStartAngle = mStartAngleOfAnimStart + (mProgress - 0.5f) * 2 * 360;
 						}
 					}
@@ -371,6 +391,7 @@ public class LoadingRecyclerView extends RecyclerView {
 
 		public void cancel() {
 			mLoadingAnimator.cancel();
+			invalidate();
 		}
 
 		public float getStartAngle() {
@@ -423,7 +444,7 @@ public class LoadingRecyclerView extends RecyclerView {
 	@Override
 	public void onDraw(Canvas c) {
 		super.onDraw(c);
-		if(mLoadingAnimatorOfStart.isRunning()) {
+		if (mLoadingAnimatorOfStart.isRunning()) {
 			c.drawBitmap(mLoadingBitmap, mLoadingMatrixOfStart, null);
 			c.save();
 			c.translate(mCircularProgressTranslateXOfStart, mCircularProgressTranslateYOfStart);
@@ -433,7 +454,7 @@ public class LoadingRecyclerView extends RecyclerView {
 					, false, mCircularProgressPaint);
 			c.restore();
 		}
-		if(mLoadingAnimatorOfEnd.isRunning()) {
+		if (mLoadingAnimatorOfEnd.isRunning()) {
 			c.drawBitmap(mLoadingBitmap, mLoadingMatrixOfStart, null);
 			c.save();
 			c.translate(mCircularProgressTranslateXOfEnd, mCircularProgressTranslateYOfEnd);

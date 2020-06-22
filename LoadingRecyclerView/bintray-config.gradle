@@ -13,7 +13,7 @@ ext {
     //以下三项只是对开源库的描述
     libraryName = 'loading-recycler-view'
     libraryDescription = '可自动加载更多的RecyclerView'
-    siteUrl = 'https://github.com/dreamgyf/loading-recycler-view'
+    siteUrl = 'https://github.com/dreamgyf/LoadingRecyclerView'
 
     //开源库对应的 github 地址
     gitUrl = 'https://github.com/woshidasusu/base-module.git'
