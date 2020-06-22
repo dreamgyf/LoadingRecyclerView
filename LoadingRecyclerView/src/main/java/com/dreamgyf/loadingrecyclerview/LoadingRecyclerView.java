@@ -84,6 +84,7 @@ public class LoadingRecyclerView extends RecyclerView {
 		if (attrs != null) {
 			TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.LoadingRecyclerView, 0, 0);
 			mCanLoadOfStart = typedArray.getBoolean(R.styleable.LoadingRecyclerView_enableLoad, true);
+			mCanLoadOfEnd = typedArray.getBoolean(R.styleable.LoadingRecyclerView_enableLoad, true);
 			mDirection = typedArray.getInt(R.styleable.LoadingRecyclerView_direction, Direction.END);
 			typedArray.recycle();
 		} else {
