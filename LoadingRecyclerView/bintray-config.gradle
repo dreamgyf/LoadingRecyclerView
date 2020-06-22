@@ -8,15 +8,15 @@ ext {
     //publishedGroupId:artifact:libraryVersion 构成你开源库的唯一路径
     publishedGroupId = 'com.dreamgyf.android.view'
     artifact = 'loading-recycler-view'
-    libraryVersion = '0.0.100'
+    libraryVersion = '0.1.0'
 
     //以下三项只是对开源库的描述
     libraryName = 'loading-recycler-view'
-    libraryDescription = '可自动加载更多的RecyclerView'
+    libraryDescription = 'A RecyclerView can automatically load more data when sliding to the edge.一种当滑动到边缘可以自动加载更多数据的RecyclerView'
     siteUrl = 'https://github.com/dreamgyf/LoadingRecyclerView'
 
     //开源库对应的 github 地址
-    gitUrl = 'https://github.com/woshidasusu/base-module.git'
+    gitUrl = 'https://github.com/dreamgyf/LoadingRecyclerView.git'
 
     //开发者信息
     developerId = 'dreamgyf'
@@ -27,3 +27,7 @@ ext {
     licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
     allLicenses = ["Apache-2.0"]
 }
+
+
+apply from: 'https://raw.githubusercontent.com/dreamgyf/GradleSync2Bintray/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/dreamgyf/GradleSync2Bintray/master/bintrayv1.gradle'

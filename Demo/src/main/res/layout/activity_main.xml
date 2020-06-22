@@ -6,12 +6,98 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.dreamgyf.loadingrecyclerview.LoadingRecyclerView
-        android:id="@+id/loading_recycler_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:direction="start|end"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/tv_linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:text="LinearLayoutManager"/>
+
+        <Button
+            android:id="@+id/btn_linear_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_linear"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btn_linear_v"
+            android:layout_marginTop="20dp"
+            android:text="HORIZONTAL"/>
+
+        <Button
+            android:id="@+id/btn_linear_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_linear"
+            app:layout_constraintLeft_toRightOf="@+id/btn_linear_h"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="20dp"
+            android:text="VERTICAL"/>
+
+        <TextView
+            android:id="@+id/tv_grid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/btn_linear_h"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="GridLayoutManager"/>
+
+        <Button
+            android:id="@+id/btn_grid_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_grid"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btn_grid_v"
+            android:layout_marginTop="20dp"
+            android:text="HORIZONTAL"/>
+
+        <Button
+            android:id="@+id/btn_grid_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_grid"
+            app:layout_constraintLeft_toRightOf="@+id/btn_grid_h"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="20dp"
+            android:text="VERTICAL"/>
+
+        <TextView
+            android:id="@+id/tv_staggered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/btn_grid_h"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="StaggeredGridLayoutManager"/>
+
+        <Button
+            android:id="@+id/btn_staggered_h"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_staggered"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btn_staggered_v"
+            android:layout_marginTop="20dp"
+            android:text="HORIZONTAL"/>
+
+        <Button
+            android:id="@+id/btn_staggered_v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_staggered"
+            app:layout_constraintLeft_toRightOf="@+id/btn_staggered_h"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="20dp"
+            android:text="VERTICAL"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

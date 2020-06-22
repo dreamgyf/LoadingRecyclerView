@@ -1,0 +1,10 @@
+/.idea
+*/build
+/build
+/gradle
+/.gradle
+*/*.iml
+/*.iml
+/local.properties
+*/proguard-rules.pro
+*/consumer-rules.pro
