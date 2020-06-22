@@ -8,7 +8,9 @@
 |
 [中文](https://github.com/dreamgyf/LoadingRecyclerView/blob/master/README-zh.md)
 
------------------------------------------------------------------------------------------------------
-LoadingRecyclerView is a RecyclerView that can automatically load more data when sliding to the edge.
------------------------------------------------------------------------------------------------------
+---
+
+### LoadingRecyclerView is a RecyclerView that can automatically load more data when sliding to the edge.
+
+---
 

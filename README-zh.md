@@ -8,7 +8,9 @@
 |
 [中文](https://github.com/dreamgyf/LoadingRecyclerView/blob/master/README-zh.md)
 
-------------------------------------------------------------------
-LoadingRecyclerView是一种当滑动到边缘可以自动加载更多数据的RecyclerView
-------------------------------------------------------------------
+---
+
+### LoadingRecyclerView是一种当滑动到边缘可以自动加载更多数据的RecyclerView
+
+---
 
