@@ -10,7 +10,7 @@
 
 ---
 
-### LoadingRecyclerView是一种当滑动到边缘可以自动加载更多数据的RecyclerView
+### LoadingRecyclerView是一种当以任意方向滑动到边缘时，可以自动加载更多数据的RecyclerView
 
 ---
 
