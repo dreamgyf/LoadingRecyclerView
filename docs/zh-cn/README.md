@@ -13,5 +13,5 @@
 
 ---
 
-<div align="center"><img src="https://github.com/dreamgyf/LoadingRecyclerView/blob/master/demo.gif"></img></div>
+<div align="center"><img src="https://raw.githubusercontent.com/dreamgyf/LoadingRecyclerView/master/demo.gif"></img></div>
 
