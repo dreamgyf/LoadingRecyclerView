@@ -17,22 +17,7 @@
 
 <div align=center><img src="https://github.com/dreamgyf/LoadingRecyclerView/blob/master/demo.gif"/></div>
 
-#### 快速使用
+#### 快速开始
 
-* 确保你的仓库包含`jcenter`:
-
-```groovy
-repositories {
-  jcenter()
-}
-```
-
-* 在模块的`build.gradle`文件中，将下列`implementation`添加到`dependencies`中：
-
-```groovy
-dependencies {
-  implementation 'androidx.recyclerview:recyclerview:1.1.0'
-  implementation 'com.dreamgyf.android.view:loading-recycler-view:0.1.0'
-}
-```
+[点我开始](https://dreamgyf.github.io/LoadingRecyclerView/#/zh-cn/)
 

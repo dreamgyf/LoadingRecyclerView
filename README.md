@@ -19,20 +19,5 @@
 
 #### Quick Start
 
-* make sure that the repositories section include `jcenter`:
-
-```groovy
-repositories {
-  jcenter()
-}
-```
-
-* On your module's `build.gradle` file add this implementation statement to the `dependencies` section:
-
-```groovy
-dependencies {
-  implementation 'androidx.recyclerview:recyclerview:1.1.0'
-  implementation 'com.dreamgyf.android.view:loading-recycler-view:0.1.0'
-}
-```
+[Click me to quick start](https://dreamgyf.github.io/LoadingRecyclerView/#/zh-cn/)
 
