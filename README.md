@@ -19,5 +19,5 @@
 
 #### Quick Start
 
-[Click me to quick start](https://dreamgyf.github.io/LoadingRecyclerView/#/zh-cn/)
+[Click me to quick start](https://dreamgyf.github.io/LoadingRecyclerView/#)
 
