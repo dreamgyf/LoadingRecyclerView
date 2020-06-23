@@ -1,4 +1,5 @@
 # LoadingRecyclerView
+
 [![License](https://img.shields.io/badge/license-Apache%202-green)](https://github.com/dreamgyf/LoadingRecyclerView/blob/master/LICENSE)
 [![Forks](https://img.shields.io/github/forks/dreamgyf/LoadingRecyclerView)](https://github.com/dreamgyf/LoadingRecyclerView/network/members)
 [![Starts](https://img.shields.io/github/stars/dreamgyf/LoadingRecyclerView)](https://github.com/dreamgyf/LoadingRecyclerView/stargazers)
@@ -14,7 +15,7 @@
 
 ---
 
-![Demo](https://dreamgyf-image.oss-cn-shanghai.aliyuncs.com/LoadingRecyclerView/demo-1.gif)
+<div align=center><img src="https://dreamgyf-image.oss-cn-shanghai.aliyuncs.com/LoadingRecyclerView/demo-1.gif"/></div>
 
 #### 快速使用
 

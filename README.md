@@ -15,7 +15,7 @@
 
 ---
 
-![Demo](https://dreamgyf-image.oss-cn-shanghai.aliyuncs.com/LoadingRecyclerView/demo-1.gif)
+<div align=center><img src="https://dreamgyf-image.oss-cn-shanghai.aliyuncs.com/LoadingRecyclerView/demo-1.gif"/></div>
 
 #### Quick Start
 
