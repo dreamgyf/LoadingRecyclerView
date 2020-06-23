@@ -15,7 +15,7 @@
 
 ---
 
-<div align=center><img src="https://dreamgyf-image.oss-cn-shanghai.aliyuncs.com/LoadingRecyclerView/demo-1.gif"/></div>
+<div align=center><img src="https://github.com/dreamgyf/LoadingRecyclerView/blob/master/demo.gif"/></div>
 
 #### 快速使用
 
