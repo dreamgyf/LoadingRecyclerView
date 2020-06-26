@@ -35,7 +35,7 @@
 
 | Return   value |                     Method                     |                Parameters                 |                      Description                      |
 | :------------: | :--------------------------------------------: | :---------------------------------------: | :---------------------------------------------------: |
-|      void      |         `setDirection(int direction)`          | One of the above constants or `START\END` | Set the direction of loading when sliding to the edge |
+|      void      |         `setDirection(int direction)`          | One of the above constants or `START\|END` | Set the direction of loading when sliding to the edge |
 |      void      | `setLoadingListener(LoadingListener listener)` |      See above interface description      |     Set a callback when a load event is generated     |
 |      void      |                 `enableLoad()`                 |                   None                    |                    Turn on loading                    |
 |      void      |          `enableLoad(int direction)`           |        One of the above constants         |  Turn on the loading function in a certain direction  |
