@@ -35,7 +35,7 @@
 
 | 返回值 |                      方法                      |              参数               |              描述              |
 | :----: | :--------------------------------------------: | :-----------------------------: | :----------------------------: |
-|  void  |         `setDirection(int direction)`          | 为上述常量中的其一或`START\END` | 设置滑动到哪个方向的边缘时加载 |
+|  void  |         `setDirection(int direction)`          | 为上述常量中的其一或`START\|END` | 设置滑动到哪个方向的边缘时加载 |
 |  void  | `setLoadingListener(LoadingListener listener)` |         见上述接口说明          |   设置当产生加载事件时的回调   |
 |  void  |                 `enableLoad()`                 |               无                |          开启加载功能          |
 |  void  |          `enableLoad(int direction)`           |       为上述常量中的其一        |     开启某个方向的价值功能     |
