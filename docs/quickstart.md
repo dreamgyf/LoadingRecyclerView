@@ -11,10 +11,7 @@ repositories {
 * On your module's `build.gradle` file add this implementation statement to the `dependencies` section:
 
 ```groovy
-dependencies {
-  implementation 'androidx.recyclerview:recyclerview:1.1.0'
-  implementation 'com.dreamgyf.android.view:loading-recycler-view:0.1.0'
-}
+implementation 'com.dreamgyf.android.view:loading-recycler-view:0.2.0'
 ```
 
 ### Add Layout

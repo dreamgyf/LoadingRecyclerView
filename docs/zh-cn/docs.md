@@ -1,9 +1,11 @@
 ### 布局属性
 
-|    属性    |  类型   | 默认值 |                             描述                             |
-| :--------: | :-----: | :----: | :----------------------------------------------------------: |
-| direction  |  flags  |  end   | 选择滑动到最前加载还是最后加载，有两种可选值:`start`,`end`，或使用`start\|end`选择两者 |
-| enableLoad | boolean |  true  |                       是否开启加载功能                       |
+|          属性          |  类型   |  默认值   |                             描述                             |
+| :--------------------: | :-----: | :-------: | :----------------------------------------------------------: |
+|       direction        |  flags  |    end    | 选择滑动到最前加载还是最后加载，有两种可选值:`start`,`end`，或使用`start\|end`选择两者 |
+|       enableLoad       | boolean |   true    |                       是否开启加载功能                       |
+| loadingBackgroundColor |  color  | #FFFAFAFA |                       加载动画的背景色                       |
+|    loadingArcColor     |  color  | #FF000000 |                      加载动画圆弧的颜色                      |
 
 ### 接口文档
 
@@ -38,7 +40,13 @@
 |  void  |         `setDirection(int direction)`          | 为上述常量中的其一或`START\|END` | 设置滑动到哪个方向的边缘时加载 |
 |  void  | `setLoadingListener(LoadingListener listener)` |         见上述接口说明          |   设置当产生加载事件时的回调   |
 |  void  |                 `enableLoad()`                 |               无                |          开启加载功能          |
-|  void  |          `enableLoad(int direction)`           |       为上述常量中的其一        |     开启某个方向的价值功能     |
+|  void  |          `enableLoad(int direction)`           |       为上述常量中的其一        |     开启某个方向的加载功能     |
 |  void  |                `disableLoad()`                 |               无                |          关闭加载功能          |
 |  void  |          `disableLoad(int direction)`          |       为上述常量中的其一        |     关闭某个方向的加载功能     |
-|  void  |        `setLoadingRadius(float radius)`        |             半径值              |       设置加载动画的大小       |
+|  float  |        `getLoadingRadius()`        |             无             |       获得加载动画的半径       |
+| void | `setLoadingRadius(float radius)` | 半径值 | 设置加载动画的半径 |
+| void | `setLoadingPosition(int direction, float x, float y)` | 方向，x坐标，y坐标 | 设置加载动画的位置 |
+| int | `getLoadingBackgroundColor()` | 无 | 获得加载动画的背景色 |
+| void | `setLoadingArcColor(int color)` | 十六进制颜色值 | 设置加载动画的背景色 |
+| int | `getLoadingArcColor()` | 无 | 获得加载动画圆弧的颜色 |
+| void | `setLoadingArcColor(int color)` | 十六进制颜色值 | 设置加载动画圆弧的颜色 |
