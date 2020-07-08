@@ -1,6 +1,7 @@
 package com.dreamgyf.myapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -82,6 +84,8 @@ public class SampleActivity extends AppCompatActivity {
 		initData();
 
 		mLoadingRecyclerView = findViewById(R.id.loading_recycler_view);
+//		mLoadingRecyclerView.setLoadingBackgroundColor(Color.parseColor("#FAFAFA"));
+//		mLoadingRecyclerView.setLoadingArcColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
 		mLoadingRecyclerView.setLayoutManager(mLoadingLayoutManager);
 		mLoadingRecyclerView.setAdapter(mLoadingRecyclerAdapter = new LoadingRecyclerAdapter(this));
@@ -117,4 +121,11 @@ public class SampleActivity extends AppCompatActivity {
 		mDataList.add(new Article("BBC记者盘点让美国总统特朗普郁闷的四件事", "距离大选短短5个月的关键阶段，美国总统特朗普最近连番遭遇挫折，政治麻烦有发酵的趋势，对选情相当不利。"));
 		mDataList.add(new Article("中国“释放10名印度军人” 致命冲突让两国民众情绪激愤", "在中印两国爆发边境致命冲突后，印度称中国释放了10名印度军人。官方力求冲突降温，但两国民间的对抗情绪继续加剧。"));
 	}
+
+//	@Override
+//	public void onWindowFocusChanged(boolean hasFocus) {
+//		super.onWindowFocusChanged(hasFocus);
+//		mLoadingRecyclerView.setLoadingPosition(LoadingRecyclerView.Direction.START, mLoadingRecyclerView.getWidth() / 3,mLoadingRecyclerView.getLoadingRadius() * 2);
+//		mLoadingRecyclerView.setLoadingPosition(LoadingRecyclerView.Direction.END, mLoadingRecyclerView.getWidth() / 3 * 2,mLoadingRecyclerView.getHeight() - mLoadingRecyclerView.getLoadingRadius() * 2);
+//	}
 }

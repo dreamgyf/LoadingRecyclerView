@@ -6,5 +6,7 @@
 			<flag name="start" value="0x01"/>
 			<flag name="end" value="0x02"/>
 		</attr>
+		<attr name="loadingBackgroundColor" format="color"/>
+		<attr name="loadingArcColor" format="color"/>
 	</declare-styleable>
 </resources>

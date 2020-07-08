@@ -77,8 +77,6 @@ public class LoadingRecyclerView extends RecyclerView {
 
 	/**
 	 * 初始化参数
-	 *
-	 * @param attrs
 	 */
 	private void initAttrs(AttributeSet attrs) {
 		if (attrs != null) {
@@ -86,6 +84,8 @@ public class LoadingRecyclerView extends RecyclerView {
 			mCanLoadOfStart = typedArray.getBoolean(R.styleable.LoadingRecyclerView_enableLoad, true);
 			mCanLoadOfEnd = typedArray.getBoolean(R.styleable.LoadingRecyclerView_enableLoad, true);
 			mDirection = typedArray.getInt(R.styleable.LoadingRecyclerView_direction, Direction.END);
+			mCircleColor = typedArray.getColor(R.styleable.LoadingRecyclerView_loadingBackgroundColor, DEFAULT_CIRCLE_COLOR);
+			mCircularProgressColor = typedArray.getColor(R.styleable.LoadingRecyclerView_loadingArcColor, DEFAULT_CIRCULAR_PROGRESS_COLOR);
 			typedArray.recycle();
 		} else {
 			enableLoad();
@@ -99,9 +99,9 @@ public class LoadingRecyclerView extends RecyclerView {
 	}
 
 	public void enableLoad(int direction) {
-		if(direction == Direction.START) {
+		if (direction == Direction.START) {
 			mCanLoadOfStart = true;
-		} else if(direction == Direction.END) {
+		} else if (direction == Direction.END) {
 			mCanLoadOfEnd = true;
 		}
 	}
@@ -112,9 +112,9 @@ public class LoadingRecyclerView extends RecyclerView {
 	}
 
 	public void disableLoad(int direction) {
-		if(direction == Direction.START) {
+		if (direction == Direction.START) {
 			mCanLoadOfStart = false;
-		} else if(direction == Direction.END) {
+		} else if (direction == Direction.END) {
 			mCanLoadOfEnd = false;
 		}
 	}
@@ -236,9 +236,9 @@ public class LoadingRecyclerView extends RecyclerView {
 	/**
 	 * Loading背景色
 	 */
-	private static final int KEY_SHADOW_COLOR = 0x1E000000;
-
-	private static final int CIRCLE_BG_LIGHT = 0xFFFAFAFA;
+	private static final int SHADOW_COLOR = 0x1E000000;
+	private static final int DEFAULT_CIRCLE_COLOR = 0xFFFAFAFA;
+	private int mCircleColor = DEFAULT_CIRCLE_COLOR;
 	/**
 	 * Loading背景
 	 */
@@ -251,6 +251,8 @@ public class LoadingRecyclerView extends RecyclerView {
 	/**
 	 * Loading圆弧
 	 */
+	private static final int DEFAULT_CIRCULAR_PROGRESS_COLOR = Color.BLACK;
+	private int mCircularProgressColor = DEFAULT_CIRCULAR_PROGRESS_COLOR;
 	private Paint mCircularProgressPaint;
 	private static final float CIRCULAR_PROGRESS_SCALE = 0.65f;
 	private RectF mCircularProgressRectF;
@@ -261,16 +263,32 @@ public class LoadingRecyclerView extends RecyclerView {
 	private int mLoadingCanvasRadius;
 	private float mLoadingRadius = 50;
 
+	/**
+	 * Loading动画坐标位置
+	 */
+	static class Position {
+		float x;
+		float y;
+
+		Position(float x, float y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+
+	private Position mLoadingStartPosition;
+	private Position mLoadingEndPosition;
+
 	private void initPaint() {
 		mLoadingPaint = new Paint();
 		mLoadingPaint.setStyle(Paint.Style.FILL);
-		mLoadingPaint.setShadowLayer(mLoadingRadius / 3, 0, 0, KEY_SHADOW_COLOR);
-		mLoadingPaint.setColor(CIRCLE_BG_LIGHT);
+		mLoadingPaint.setShadowLayer(mLoadingRadius / 3, 0, 0, SHADOW_COLOR);
+		mLoadingPaint.setColor(mCircleColor);
 		mCircularProgressPaint = new Paint();
 		mCircularProgressPaint.setStyle(Paint.Style.STROKE);
 		mCircularProgressPaint.setStrokeWidth(mLoadingRadius / 7);
 		mCircularProgressPaint.setAntiAlias(true);
-		mCircularProgressPaint.setColor(Color.BLACK);
+		mCircularProgressPaint.setColor(mCircularProgressColor);
 	}
 
 	private void initMatrix() {
@@ -297,20 +315,44 @@ public class LoadingRecyclerView extends RecyclerView {
 			orientation = ((StaggeredGridLayoutManager) mLayoutManager).getOrientation();
 		}
 		if (orientation == VERTICAL) {
-			mCircularProgressTranslateXOfStart = (float) getWidth() / 2 - mLoadingCanvasRadius;
-			mCircularProgressTranslateYOfStart = mLoadingCanvasRadius;
+			if (mLoadingStartPosition == null) {
+				mCircularProgressTranslateXOfStart = (float) getWidth() / 2 - mLoadingCanvasRadius;
+				mCircularProgressTranslateYOfStart = mLoadingCanvasRadius;
+			} else {
+				mCircularProgressTranslateXOfStart = position2Translate(mLoadingStartPosition.x);
+				mCircularProgressTranslateYOfStart = position2Translate(mLoadingStartPosition.y);
+			}
 
-			mCircularProgressTranslateXOfEnd = (float) getWidth() / 2 - mLoadingCanvasRadius;
-			mCircularProgressTranslateYOfEnd = (float) getHeight() - mLoadingCanvasRadius * 2 - mLoadingCanvasRadius;
+			if (mLoadingEndPosition == null) {
+				mCircularProgressTranslateXOfEnd = (float) getWidth() / 2 - mLoadingCanvasRadius;
+				mCircularProgressTranslateYOfEnd = (float) getHeight() - mLoadingCanvasRadius * 2 - mLoadingCanvasRadius;
+			} else {
+				mCircularProgressTranslateXOfEnd = position2Translate(mLoadingEndPosition.x);
+				mCircularProgressTranslateYOfEnd = position2Translate(mLoadingEndPosition.y);
+			}
 		} else {
-			mCircularProgressTranslateXOfStart = mLoadingCanvasRadius;
-			mCircularProgressTranslateYOfStart = (float) getHeight() / 2 - mLoadingCanvasRadius;
+			if(mLoadingStartPosition == null) {
+				mCircularProgressTranslateXOfStart = mLoadingCanvasRadius;
+				mCircularProgressTranslateYOfStart = (float) getHeight() / 2 - mLoadingCanvasRadius;
+			} else {
+				mCircularProgressTranslateXOfStart = position2Translate(mLoadingStartPosition.x);
+				mCircularProgressTranslateYOfStart = position2Translate(mLoadingStartPosition.y);
+			}
 
-			mCircularProgressTranslateXOfEnd = (float) getWidth() - mLoadingCanvasRadius * 2 - mLoadingCanvasRadius;
-			mCircularProgressTranslateYOfEnd = (float) getHeight() / 2 - mLoadingCanvasRadius;
+			if(mLoadingEndPosition == null) {
+				mCircularProgressTranslateXOfEnd = (float) getWidth() - mLoadingCanvasRadius * 2 - mLoadingCanvasRadius;
+				mCircularProgressTranslateYOfEnd = (float) getHeight() / 2 - mLoadingCanvasRadius;
+			} else {
+				mCircularProgressTranslateXOfEnd = position2Translate(mLoadingEndPosition.x);
+				mCircularProgressTranslateYOfEnd = position2Translate(mLoadingEndPosition.y);
+			}
 		}
 		mLoadingMatrixOfStart.setTranslate(mCircularProgressTranslateXOfStart, mCircularProgressTranslateYOfStart);
 		mLoadingMatrixOfEnd.setTranslate(mCircularProgressTranslateXOfEnd, mCircularProgressTranslateYOfEnd);
+	}
+
+	private float position2Translate(float coordinate) {
+		return coordinate - mLoadingCanvasRadius;
 	}
 
 	/**
@@ -320,6 +362,45 @@ public class LoadingRecyclerView extends RecyclerView {
 		mLoadingBitmap = Bitmap.createBitmap(mLoadingCanvasRadius * 2, mLoadingCanvasRadius * 2, Bitmap.Config.ARGB_8888);
 		mLoadingCanvas = new Canvas(mLoadingBitmap);
 		mLoadingCanvas.drawCircle(mLoadingCanvasRadius, mLoadingCanvasRadius, mLoadingRadius, mLoadingPaint);
+	}
+
+	public int getLoadingBackgroundColor() {
+		return mCircleColor;
+	}
+
+	public void setLoadingBackgroundColor(int color) {
+		mCircleColor = color;
+		mLoadingPaint.setColor(mCircleColor);
+		if(mLoadingBitmap != null) {
+			drawBitmap();
+		}
+	}
+
+	public int getLoadingArcColor() {
+		return mCircularProgressColor;
+	}
+
+	public void setLoadingArcColor(int color) {
+		mCircularProgressColor = color;
+		mCircularProgressPaint.setColor(mCircularProgressColor);
+	}
+
+	public float getLoadingRadius() {
+		return mLoadingRadius;
+	}
+
+	public void setLoadingRadius(float radius) {
+		mLoadingRadius = radius;
+		measureLoadingView();
+		drawBitmap();
+	}
+
+	public void setLoadingPosition(int direction, float x, float y) {
+		if (direction == Direction.START) {
+			mLoadingStartPosition = new Position(x, y);
+		} else if (direction == Direction.END) {
+			mLoadingEndPosition = new Position(x, y);
+		}
 	}
 
 	/**
@@ -337,7 +418,7 @@ public class LoadingRecyclerView extends RecyclerView {
 
 		private int mDuration = 1332;
 
-		public CircularProgressAnimator() {
+		CircularProgressAnimator() {
 			init();
 		}
 
@@ -393,33 +474,33 @@ public class LoadingRecyclerView extends RecyclerView {
 			});
 		}
 
-		public void start() {
+		void start() {
 			mLoadingAnimator.setDuration(mDuration);
 			mLoadingAnimator.start();
 		}
 
-		public void cancel() {
+		void cancel() {
 			mLoadingAnimator.cancel();
 			invalidate();
 		}
 
-		public float getStartAngle() {
+		float getStartAngle() {
 			return mStartAngle;
 		}
 
-		public float getSweepAngle() {
+		float getSweepAngle() {
 			return mSweepAngle;
 		}
 
-		public float getRotateAngle() {
+		float getRotateAngle() {
 			return mRotateAngle;
 		}
 
-		public boolean isRunning() {
+		boolean isRunning() {
 			return mLoadingAnimator.isRunning();
 		}
 
-		public void setDuration(int duration) {
+		void setDuration(int duration) {
 			mDuration = duration;
 		}
 
@@ -432,12 +513,6 @@ public class LoadingRecyclerView extends RecyclerView {
 	private void initAnimator() {
 		mLoadingAnimatorOfStart = new CircularProgressAnimator();
 		mLoadingAnimatorOfEnd = new CircularProgressAnimator();
-	}
-
-	public void setLoadingRadius(float radius) {
-		mLoadingRadius = radius;
-		measureLoadingView();
-		drawBitmap();
 	}
 
 	@Override
