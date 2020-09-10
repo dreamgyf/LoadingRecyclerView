@@ -28,6 +28,5 @@ ext {
     allLicenses = ["Apache-2.0"]
 }
 
-
-apply from: 'https://raw.githubusercontent.com/dreamgyf/GradleSync2Bintray/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/dreamgyf/GradleSync2Bintray/master/bintrayv1.gradle'
+apply from: 'https://raw.githubusercontent.com/dreamgyf/SomeScript/master/bintray/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/dreamgyf/SomeScript/master/bintray/bintrayv1.gradle'
